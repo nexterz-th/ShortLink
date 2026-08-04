@@ -57,6 +57,16 @@
 7. **เปิด SSL** — ติดตั้ง Let's Encrypt จาก Plesk แล้วยกเลิกคอมเมนต์บล็อกบังคับ HTTPS
    ใน `public/.htaccess`
 
+### ดึงจาก GitHub ผ่าน Plesk Git (แนะนำสำหรับการอัปเดตภายหลัง)
+
+1. Plesk → โดเมน → **Git** → Add Repository → เลือก Remote Git repository
+2. URL: `https://github.com/nexterz-th/ShortLink.git` · Branch: `main`
+3. Deployment path ตั้งเป็นโฟลเดอร์ของโดเมน แล้วตั้ง document root ไปที่ `public` ตามข้อ 3 ด้านบน
+4. เปิดเว็บครั้งแรกเพื่อรัน `/install.php` แล้วลบไฟล์นั้นทิ้ง
+
+ไฟล์ `app/config.local.php` ถูกใส่ไว้ใน `.gitignore` แล้ว การกด Pull ครั้งต่อ ๆ ไป
+จึงไม่ทับคอนฟิกฐานข้อมูลบนเซิร์ฟเวอร์ และไม่ทำให้รหัสผ่านหลุดขึ้น repo สาธารณะ
+
 ตัวติดตั้งจะสร้างไฟล์ `app/config.local.php` ให้เอง (ต้องให้โฟลเดอร์ `app/` เขียนไฟล์ได้ชั่วคราว)
 หากต้องการติดตั้งใหม่ ให้ลบไฟล์นี้ทิ้ง
 
