@@ -1,0 +1,38 @@
+# สภาพแวดล้อมสำหรับทดสอบบนเครื่องเท่านั้น (ไม่ต้องอัปโหลดขึ้นโฮสต์)
+# คำเตือน: รหัสผ่านในไฟล์นี้เป็นค่าสำหรับเครื่องทดสอบที่เข้าถึงได้เฉพาะ localhost
+#          ห้ามนำไปใช้กับเซิร์ฟเวอร์จริงหรือเปิดพอร์ตฐานข้อมูลออกอินเทอร์เน็ต
+# ใช้งาน: docker compose up -d  แล้วเปิด http://localhost:8080
+services:
+  web:
+    image: php:8.2-apache
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      bash -c "docker-php-ext-install pdo_mysql >/dev/null 2>&1;
+               if ! php -m | grep -qi '^gd$'; then
+                 apt-get update >/dev/null 2>&1 && apt-get install -y libpng-dev libjpeg-dev >/dev/null 2>&1;
+                 docker-php-ext-configure gd --with-jpeg >/dev/null 2>&1;
+                 docker-php-ext-install gd >/dev/null 2>&1;
+               fi;
+               a2enmod rewrite >/dev/null;
+               sed -ri 's!DocumentRoot /var/www/html!DocumentRoot /var/www/html/public!' /etc/apache2/sites-available/000-default.conf;
+               printf '<Directory /var/www/html/public>\\n  AllowOverride All\\n  Require all granted\\n</Directory>\\n' > /etc/apache2/conf-enabled/zz-app.conf;
+               apache2-foreground"
+
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: linkdb
+      MYSQL_USER: linkuser
+      MYSQL_PASSWORD: linkpass
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 20

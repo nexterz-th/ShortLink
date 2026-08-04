@@ -1,0 +1,10 @@
+# ใช้เฉพาะกรณีที่ตั้ง document root ไว้ที่โฟลเดอร์นี้ (ไม่ได้ชี้ไปที่ public/)
+# แนะนำให้ตั้ง document root เป็น .../Link/public จะปลอดภัยกว่า
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(app|storage)(/.*)?$ - [F,L]
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
+
+Options -Indexes

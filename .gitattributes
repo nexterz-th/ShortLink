@@ -1,0 +1,6 @@
+# บังคับให้ไฟล์ในรีโปเป็น LF เสมอ เพื่อให้อัปขึ้นโฮสต์ Linux/Plesk แล้วทำงานถูกต้อง
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.ttf binary

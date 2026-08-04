@@ -1,0 +1,37 @@
+# ===== Link. — ระบบย่อลิงก์ (Apache / Plesk) =====
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # บังคับ HTTPS (เปิดใช้เมื่อติดตั้ง SSL แล้ว)
+    # RewriteCond %{HTTPS} !=on
+    # RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    # RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+    # ไฟล์และโฟลเดอร์ที่มีอยู่จริง ให้เข้าถึงได้ตามปกติ
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # หน้าสถิติสาธารณะ /p/{code}
+    RewriteRule ^p/([A-Za-z0-9_-]{3,64})/?$ preview.php?code=$1 [QSA,L]
+
+    # เปลี่ยนเส้นทางลิงก์ย่อ /{code}
+    RewriteRule ^([A-Za-z0-9_-]{3,64})/?$ go.php?code=$1 [QSA,L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# แคชไฟล์สแตติก
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 7 days"
+    ExpiresByType application/javascript "access plus 7 days"
+</IfModule>
+
+Options -Indexes
