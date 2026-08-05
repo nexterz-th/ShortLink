@@ -12,7 +12,8 @@
       el.textContent = t === 'dark' ? '☀️' : '🌙';
     });
   }
-  applyTheme(localStorage.getItem(KEY) || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  // ค่าเริ่มต้นคือโหมดมืด จนกว่าผู้ใช้จะกดสลับเอง
+  applyTheme(localStorage.getItem(KEY) || 'dark');
 
   document.addEventListener('click', function (ev) {
     const toggle = ev.target.closest('[data-theme-toggle]');

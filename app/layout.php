@@ -6,7 +6,7 @@ function page_head(string $title, string $bodyClass = '', string $assets = 'asse
 {
     $site = APP_INSTALLED ? (string)setting('site_name', 'Link.') : 'Link.';
     ?><!DOCTYPE html>
-<html lang="th" data-theme="light">
+<html lang="th" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,7 +16,8 @@ function page_head(string $title, string $bodyClass = '', string $assets = 'asse
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/<?= $assets ?>/css/app.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔗</text></svg>">
-<script>document.documentElement.setAttribute('data-theme', localStorage.getItem('link-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));</script>
+<script>/* ธีมเริ่มต้นคือโหมดมืด ผู้ใช้สลับเองแล้วระบบจะจำค่าไว้ */
+document.documentElement.setAttribute('data-theme', localStorage.getItem('link-theme') || 'dark');</script>
 </head>
 <body class="<?= e($bodyClass) ?>">
 <?php
